@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="ExpandSelect_1.00.js"></script>
+<script type="text/javascript" src="arel_16.js"></script>
+
+<title>GLue Mapping</title>
+<style>
+    #selection_button {
+        position: absolute;
+        top: 60px;
+        right: 2%;
+        border-bottom-color: transparent;
+        z-index: 2;
+    }
+
+    .select_options {
+        position: absolute;
+        top: 80px;
+        right: 4%;
+        border-bottom-color: transparent;
+        z-index: -1;
+    }
+</style>
+</head>
+<body style="text-align: center;">
+    <div id="selection_button">
+        <input type="button" id="textures" style="z-index: 99999" onclick="show_popup()" value="Change Reflection Map" >
+    </div>
+    <div class="select_options" id="texture_options">
+        <select id="search" style="height: 1px; width: 1px; z-index: -99; -webkit-appearance: none;">
+            <option value="space">Space</option>
+            <option value="office">Office</option>
+            <option value="building">Building</option>
+        </select>
+    </div>
+<script type="text/javascript">
+
+    function open(elem) {
+        if (document.createEvent) {
+            var e = document.createEvent("MouseEvents");
+            e.initMouseEvent("mousedown", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            elem[0].dispatchEvent(e);
+        } else if (element.fireEvent) {
+            elem[0].fireEvent("onmousedown");
+        }
+    }
+
+    function show_popup(){
+        var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent );
+        if (iOS){
+            ExpandSelect('search');
+            setTimeout(function() {window.scrollTo(0, 0);},0);
+        } else {
+            var a = setTimeout( function(){
+                        open($('#search'));
+                    }
+                    , 100 );
+        }
+    }
+
+    $("#search").live('change',function(){
+        current_environmental_map = $(this).find(":selected").val();
+        arel.Scene.loadEnvironmentMap("resources/"+ current_environmental_map +".jpeg");
+    });
+
+</script>
+
+</body>
+</html>
